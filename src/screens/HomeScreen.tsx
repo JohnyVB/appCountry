@@ -1,8 +1,17 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
+import { CountryCard } from '../components/CountryCard';
 
 export const HomeScreen = () => {
   return (
-    <Text>index</Text>
+    <View style={StylesHome.bodyHome}>
+      <CountryCard />
+    </View>
   )
 }
+
+const StylesHome = StyleSheet.create({
+    bodyHome: {
+      flex: 1
+    }
+});
