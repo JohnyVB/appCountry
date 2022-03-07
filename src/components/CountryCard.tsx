@@ -1,18 +1,24 @@
 import React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
+import { CountryBasic } from '../interfaces/countryBasic';
 
-export const CountryCard = () => {
+interface props {
+    country: CountryBasic;
+}
+
+export const CountryCard = ({country}: props) => {
+
   return (
     <View style={StylesCard.bodyCard}>
         <Image 
-           source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/200px-Flag_of_Colombia.svg.png'}}
+           source={{uri: country.flags.png}}
            style={StylesCard.flag} 
         />
         <View style={StylesCard.bodyData}>
-            <Text style={StylesCard.name}>Colombia</Text>
-            <Text style={StylesCard.data}>Population: 81'770.900</Text>
-            <Text style={StylesCard.data}>Region: latam</Text>
-            <Text style={StylesCard.data}>Capital: Bogotá</Text>
+            <Text style={StylesCard.name}>{country.name.official}</Text>
+            <Text style={StylesCard.data}>Population: {country.population}</Text>
+            <Text style={StylesCard.data}>Region: {country.region}</Text>
+            <Text style={StylesCard.data}>Capital: {country.capital}</Text>
         </View>
     </View>
   )
