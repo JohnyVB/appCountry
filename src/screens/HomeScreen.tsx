@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { CountryCard } from '../components/CountryCard';
-import { useQuery } from 'react-query';
-import { getAll, Regions } from '../api/apiCountry';
+import { Regions } from '../api/apiCountry';
 import { Picker } from '@react-native-picker/picker';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParams } from '../router/Navigator';
+import { useCountry } from '../hooks/useCountry';
 
-export const HomeScreen = () => {
+interface Props extends StackScreenProps<RootStackParams, 'HomeScreen'>{};
 
-  const { isLoading, error, data } = useQuery('all', getAll);
+export const HomeScreen = ({ navigation }: Props) => {
 
-  const [selectedRegion, setselectedRegion] = useState();
+  const {loadCountries, isLoading, countryList} = useCountry();
+
+  const [selectedRegion, setselectedRegion] = useState(null);  
 
   return (
     <View style={StylesHome.bodyHome}>
@@ -18,7 +22,7 @@ export const HomeScreen = () => {
           selectedValue={selectedRegion}
           onValueChange={(itemValue, itemIndex) => setselectedRegion(itemValue)}
         >
-          <Picker.Item enabled={false} label="Filter by Region" value="0" />
+          <Picker.Item enabled={false} label="Filter by Region" value={null} />
           {
             Regions.map(item => <Picker.Item key={item} label={item} value={item} />)
           }
@@ -37,10 +41,10 @@ export const HomeScreen = () => {
               />
             ) : (
               <FlatList
-                data={data}
+                data={countryList}
                 keyExtractor={(item) => item.name.official}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => <CountryCard country={item} />}
+                renderItem={({ item }) => <CountryCard navigation={navigation} country={item} />}
               />
             )
         }

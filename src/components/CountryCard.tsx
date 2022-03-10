@@ -1,27 +1,35 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { CountryBasic } from '../interfaces/countryBasic';
+import { RootStackParams } from '../router/Navigator';
 
 interface props {
     country: CountryBasic;
+    navigation: StackNavigationProp<RootStackParams, "HomeScreen">
 }
 
-export const CountryCard = ({country}: props) => {
+export const CountryCard = ({ country, navigation }: props) => {
 
-  return (
-    <View style={StylesCard.bodyCard}>
-        <Image 
-           source={{uri: country.flags.png}}
-           style={StylesCard.flag} 
-        />
-        <View style={StylesCard.bodyData}>
-            <Text style={StylesCard.name}>{country.name.official}</Text>
-            <Text style={StylesCard.data}>Population: {country.population}</Text>
-            <Text style={StylesCard.data}>Region: {country.region}</Text>
-            <Text style={StylesCard.data}>Capital: {country.capital}</Text>
-        </View>
-    </View>
-  )
+    return (
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('CountryScreen' as never, { CountryOfficialName: country.name.official } as never)}
+        >
+            <View style={StylesCard.bodyCard}>
+                <Image
+                    source={{ uri: country.flags.png }}
+                    style={StylesCard.flag}
+                />
+                <View style={StylesCard.bodyData}>
+                    <Text style={StylesCard.name}>{country.name.official}</Text>
+                    <Text style={StylesCard.data}>Population: {country.population}</Text>
+                    <Text style={StylesCard.data}>Region: {country.region}</Text>
+                    <Text style={StylesCard.data}>Capital: {country.capital}</Text>
+                </View>
+            </View>
+        </TouchableOpacity>
+    )
 }
 
 const StylesCard = StyleSheet.create({
